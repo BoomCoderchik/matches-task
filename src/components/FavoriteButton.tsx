@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text } from 'react-native';
 import { colors } from '../theme';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
 export function FavoriteButton({ active, onPress }: Props) {
   return (
     <Pressable
+      {...(Platform.OS === 'web' ? { 'aria-pressed': active } : {})}
       onPress={onPress}
       hitSlop={12}
       accessibilityRole="button"

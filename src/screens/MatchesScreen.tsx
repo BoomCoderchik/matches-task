@@ -38,7 +38,7 @@ export function MatchesScreen() {
             {data ? `Тур ${data.round} · ${matches.length} матчей` : 'Расписание и результаты'}
           </Text>
         </View>
-        <Pressable accessibilityRole="button" accessibilityState={{ disabled: loading }}
+        <Pressable accessibilityRole="button" accessibilityState={{ disabled: loading }} aria-disabled={loading}
           disabled={loading} onPress={() => void refresh()}
           style={({ pressed }) => [styles.refresh, loading && styles.disabled, pressed && styles.pressed]}>
           <Text style={styles.refreshText}>{loading ? 'Загрузка…' : 'Обновить'}</Text>
@@ -51,7 +51,7 @@ export function MatchesScreen() {
       <View style={styles.controls}>
         <View accessibilityRole="tablist" style={styles.tabs}>
           {filters.map(({ value, label }) => (
-            <Pressable key={value} accessibilityRole="tab" accessibilityState={{ selected: filter === value }}
+            <Pressable key={value} accessibilityRole="tab" accessibilityState={{ selected: filter === value }} aria-selected={filter === value}
               onPress={() => setFilter(value)} style={({ pressed }) => [styles.tab, filter === value && styles.selectedTab, pressed && styles.pressed]}>
               <Text style={[styles.tabText, filter === value && styles.selectedText]}>{label}</Text>
             </Pressable>
