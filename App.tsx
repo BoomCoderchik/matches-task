@@ -6,7 +6,7 @@ export default function App() {
   return (
     <View style={styles.root}>
       <MatchesScreen />
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
     </View>
   );
 }
