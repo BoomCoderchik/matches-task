@@ -100,7 +100,7 @@ export function MatchesScreen() {
             <Text style={styles.emptyText}>{matches.length ? 'Попробуйте другой клуб или выберите все матчи.' : 'Расписание появится после публикации. Попробуйте обновить позже.'}</Text>
             {hasSelection ? <Pressable accessibilityRole="button" onPress={reset} style={styles.retry}><Text style={styles.retryText}>Сбросить фильтры</Text></Pressable> : null}
           </View>
-        ) : null}
+        ) : undefined}
         ListFooterComponent={
           <View style={styles.footer}>
             <Text style={styles.timezone}>Время указано в вашем часовом поясе</Text>

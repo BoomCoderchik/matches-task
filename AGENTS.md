@@ -1,4 +1,4 @@
-This is a small Expo / React Native test project (Expo SDK 57, single screen, no router). It runs in a browser (`npm run web`) and in Expo Go.
+This is a small Expo / React Native test project (Expo SDK 58, single screen, no router). It runs in a browser (`npm run web`) and in Expo Go.
 
 ## Expo has changed — do not trust your training data
 
