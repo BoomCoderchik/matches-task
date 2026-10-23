@@ -1,83 +1,89 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-23T05:59:45.2756914Z",
+  "generatedAt": "2026-10-23T06:27:00.722Z",
   "title": "Design System: Матчи тура",
   "extensions": {
     "breakpoints": [
       {
-        "name": "two-columns",
-        "value": "1000px"
+        "name": "compact-row",
+        "value": "760px"
       }
     ],
     "shadows": [],
-    "motion": []
+    "motion": [],
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Condensed title",
+        "purpose": "Local RobotoCondensedBold font, assets/fonts/RobotoCondensed-Bold.ttf; also used by masthead and scores. Instantiated at weight 700 with fontTools from https://github.com/google/fonts/tree/main/ofl/robotocondensed. License: assets/fonts/OFL.txt."
+      }
+    }
   },
   "components": [
     {
       "name": "Refresh",
       "kind": "button",
       "refersTo": "button-refresh",
-      "description": "Static web translation of the native refresh button; active and disabled opacity match source. No custom hover/focus treatment is defined.",
-      "html": "<button class=\"ds-refresh\">Обновить</button>",
-      "css": ".ds-refresh { background:#c42b22; color:#ffffff; min-height:44px; padding:0 20px; border:0; border-radius:8px; font-size:14px; font-weight:700; font-family:system-ui,sans-serif; } .ds-refresh:active { opacity:.75; } .ds-refresh:disabled { opacity:.6; }"
+      "description": "HTML translation of native control; browser default focus retained.",
+      "html": "<button class=\"ds-refresh\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#686e68\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 7v5h-5M4 17v-5h5M5.5 8a7 7 0 0 1 11.55-2.65L20 8M4 16l2.95 2.65A7 7 0 0 0 18.5 16\"/></svg>Обновить</button>",
+      "css": ".ds-refresh { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:0 12px; border:0; border-radius:4px; background:transparent; color:#222622; font-size:13px; font-weight:500; font-family:system-ui,sans-serif; } .ds-refresh:hover,.ds-refresh:active { background:#f3f4f1; } .ds-refresh:disabled { opacity:.6; }"
     },
     {
       "name": "Retry",
       "kind": "button",
       "refersTo": "button-retry",
-      "description": "Bordered recovery action. The native retry source defines no authored hover/focus/pressed variant.",
+      "description": "Recovery action; source defines no custom hover or focus treatment.",
       "html": "<button class=\"ds-retry\">Повторить</button>",
-      "css": ".ds-retry { background:#ffffff; color:#c42b22; min-height:44px; padding:0 14px; border:1px solid #dce2e8; border-radius:8px; font-size:14px; font-weight:600; font-family:system-ui,sans-serif; }"
+      "css": ".ds-retry { min-height:44px; padding:0 14px; border:1px solid #e3e6df; border-radius:8px; background:#f3f4f1; color:#bd342a; font-size:14px; font-weight:600; font-family:system-ui,sans-serif; }"
     },
     {
       "name": "Club search",
       "kind": "input",
       "refersTo": "search",
-      "description": "Search field with native browser focus behavior in this static translation.",
-      "html": "<input class=\"ds-search\" aria-label=\"Поиск по названию клуба\" placeholder=\"Найти клуб\" />",
-      "css": ".ds-search { min-height:48px; min-width:160px; max-width:360px; padding:0 14px; border:1px solid #dce2e8; border-radius:8px; background:#ffffff; color:#17212b; font-size:14px; font-family:system-ui,sans-serif; } .ds-search::placeholder { color:#596674; }"
+      "description": "Wide-layout search translation; compact native layout expands its wrapper to full width.",
+      "html": "<label class=\"ds-search-box\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#686e68\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m16 16 4.5 4.5\"/></svg><input class=\"ds-search\" aria-label=\"Поиск по названию клуба\" placeholder=\"Найти клуб\"></label>",
+      "css": ".ds-search-box { display:flex; align-items:center; gap:8px; min-width:160px; max-width:230px; padding:0 12px; border-radius:4px; background:#f3f4f1; } .ds-search { width:100%; min-width:0; min-height:44px; padding:0; border:0; background:transparent; color:#222622; font-size:13px; font-family:system-ui,sans-serif; } .ds-search::placeholder { color:#686e68; }"
     },
     {
       "name": "Selected filter",
       "kind": "chip",
       "refersTo": "tab-selected",
-      "description": "One selected filter tab; static selected state.",
-      "html": "<button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Все</button>",
-      "css": ".ds-tab { min-height:44px; padding:0 13px; border:0; border-radius:7px; background:#17212b; color:#ffffff; font-size:13px; font-weight:600; font-family:system-ui,sans-serif; } .ds-tab:active { opacity:.75; }"
+      "description": "Red text and underline identify selection; native browser focus retained in this translation.",
+      "html": "<button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Все <span class=\"ds-count\">8</span></button>",
+      "css": ".ds-tab { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-width:44px; min-height:54px; padding:0; border:0; border-bottom:2px solid #bd342a; background:transparent; color:#bd342a; font-size:13px; font-weight:600; font-family:system-ui,sans-serif; } .ds-tab:hover,.ds-tab:active { background:#f3f4f1; } .ds-count { font-size:12px; font-weight:400; font-variant-numeric:tabular-nums; }"
     },
     {
-      "name": "Live status",
-      "kind": "chip",
-      "refersTo": "status-live",
-      "description": "Noninteractive live badge; text accompanies its color and circular indicator.",
-      "html": "<span class=\"ds-live\"><span class=\"ds-dot\" aria-hidden=\"true\"></span>Идёт матч</span>",
-      "css": ".ds-live { display:inline-flex; align-items:center; gap:6px; border-radius:6px; padding:5px 9px; background:#eaf6ef; color:#176947; font-size:12px; font-weight:600; font-family:system-ui,sans-serif; } .ds-dot { width:6px; height:6px; border-radius:3px; background:#176947; }"
+      "name": "Selected favorite",
+      "kind": "button",
+      "description": "Filled native SVG star; HTML target matches the visible 44px control but does not reproduce native hitSlop.",
+      "html": "<button class=\"ds-favorite\" aria-label=\"Убрать из избранного\" aria-pressed=\"true\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m12 3 2.78 5.64L21 9.55l-4.5 4.39 1.06 6.2L12 17.21l-5.56 2.93 1.06-6.2L3 9.55l6.22-.91L12 3Z\"/></svg></button>",
+      "css": ".ds-favorite { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; padding:0; border:0; border-radius:4px; background:transparent; color:#bd342a; } .ds-favorite:hover,.ds-favorite:active { background:#f3f4f1; }"
     },
     {
-      "name": "Match card surface",
-      "kind": "card",
-      "refersTo": "match-card",
-      "description": "Static surface preview; full native MatchCard contains status, favorite, clubs, score and date.",
-      "html": "<div class=\"ds-card\">Матч тура</div>",
-      "css": ".ds-card { background:#ffffff; border:1px solid #dce2e8; border-radius:14px; padding:18px; color:#17212b; font-family:system-ui,sans-serif; }"
+      "name": "Live match row",
+      "kind": "custom",
+      "refersTo": "match-row-live",
+      "description": "Static structural translation of the live row. Display font is named but not embedded in this isolated preview; use the application for exact font rendering.",
+      "html": "<div class=\"ds-row\"><div class=\"ds-meta\">23 окт., 19:00<br><span class=\"ds-status\">● Идёт матч</span></div><div class=\"ds-teams\"><div class=\"ds-club ds-home\">Хозяева<div class=\"ds-city\">Город</div></div><div class=\"ds-score\">2 : 1</div><div class=\"ds-club\">Гости<div class=\"ds-city\">Город</div></div></div></div>",
+      "css": ".ds-row { display:flex; align-items:center; gap:20px; min-height:105px; padding:22px 20px; border-bottom:1px solid #e3e6df; background:#fff5f2; color:#222622; font-family:system-ui,sans-serif; } .ds-meta { width:160px; flex-shrink:0; color:#686e68; font-size:12px; line-height:18px; } .ds-status { color:#bd342a; font-weight:600; } .ds-teams { display:flex; align-items:center; gap:22px; flex:1; min-width:0; } .ds-club { flex:1; min-width:0; font-size:17px; line-height:23px; font-weight:600; } .ds-home { text-align:right; } .ds-city { margin-top:4px; color:#686e68; font-size:12px; line-height:17px; font-weight:400; } .ds-score { display:flex; align-items:center; justify-content:center; width:78px; min-height:44px; flex-shrink:0; border-radius:4px; background:#bd342a; color:#fff; font-family:RobotoCondensedBold,'Arial Narrow',sans-serif; font-size:28px; font-variant-numeric:tabular-nums; } @media(max-width:759px) { .ds-row { flex-direction:column; align-items:stretch; gap:18px; padding:18px 14px 22px; } .ds-meta { width:100%; } .ds-teams { gap:12px; } .ds-club { font-size:15px; line-height:21px; } }"
     }
   ],
   "narrative": {
-    "overview": "This records the implemented single-screen Expo / React Native system. It extends the original white surface, dark sans text and red favorite accent. The README calls for a neat, readable test assignment; there is no separately approved brand metaphor or new visual identity.",
+    "overview": "The implemented screen uses a compact football results list: a condensed masthead, prominent scores, flat rows and restrained red states. It replaces the earlier rounded card grid following the user's request to make the interface feel less AI-generated.",
     "keyCharacteristics": [
-      "Clear score and club hierarchy.",
-      "Flat white cards on a pale neutral page.",
-      "Red actions and favorites; green live status."
+      "One continuous match list with fine dividers.",
+      "White background and muted olive-gray supporting tones.",
+      "Condensed headings and scores; platform sans for clubs and controls."
     ],
     "rules": [],
     "dos": [
-      "Do reuse the theme color roles and existing component shapes.",
-      "Do preserve wrapping, device-local time labels and accessible control states.",
-      "Do keep scores prominent and supporting copy subdued."
+      "Do keep match rows in one continuous list across widths.",
+      "Do reuse the existing color roles, local display font and SVG icon style.",
+      "Do preserve wrapping, device-local time labels and accessible control states."
     ],
     "donts": [
+      "Don't restore the previous two-column rounded-card layout.",
       "Don't encode status or favorite selection through color alone.",
-      "Don't document custom fonts, animations, shadows or hover treatments as implemented when they are absent."
+      "Don't present untested native rendering or custom focus/animation effects as verified behavior."
     ]
   }
 }

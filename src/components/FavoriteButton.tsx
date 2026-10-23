@@ -1,5 +1,6 @@
-import { Platform, Pressable, StyleSheet, Text } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import { colors } from '../theme';
+import { Icon } from './Icon';
 
 type Props = {
   active: boolean;
@@ -16,20 +17,14 @@ export function FavoriteButton({ active, onPress }: Props) {
       accessibilityRole="button"
       accessibilityLabel={active ? 'Убрать из избранного' : 'Добавить в избранное'}
       accessibilityState={{ selected: active }}
-      style={({ pressed }) => [styles.button, pressed && { opacity: 0.65 }]}
+      style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => [styles.button, (pressed || hovered) && styles.highlight]}
     >
-      <Text style={[styles.star, active && styles.active]}>{active ? '★' : '☆'}</Text>
+      <Icon name="star" size={20} color={active ? colors.accent : colors.muted} filled={active} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  button: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
-  star: {
-    fontSize: 22,
-    color: colors.muted,
-  },
-  active: {
-    color: colors.accent,
-  },
+  button: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', borderRadius: 4 },
+  highlight: { backgroundColor: colors.surface },
 });

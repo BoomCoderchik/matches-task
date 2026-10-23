@@ -1,11 +1,13 @@
 export const colors = {
-  background: '#f4f6f8',
-  surface: '#ffffff',
-  ink: '#17212b',
-  muted: '#596674',
-  line: '#dce2e8',
-  accent: '#c42b22',
-  accentSoft: '#fff0ee',
-  live: '#176947',
-  liveSoft: '#eaf6ef',
+  background: '#ffffff',
+  surface: '#f3f4f1',
+  ink: '#222622',
+  muted: '#686e68',
+  line: '#e3e6df',
+  accent: '#bd342a',
+  accentSoft: '#fff5f2',
+  live: '#bd342a',
+  liveSoft: '#fff5f2',
 };
+
+export const displayFont = 'RobotoCondensedBold';

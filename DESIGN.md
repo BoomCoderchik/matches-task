@@ -1,128 +1,150 @@
 ---
 name: Матчи тура
-description: Existing Expo match list visual conventions, extracted from implementation.
+description: Compact football results list in React Native and Expo web.
 colors:
-  background: "#f4f6f8"
-  surface: "#ffffff"
-  ink: "#17212b"
-  muted: "#596674"
-  line: "#dce2e8"
-  accent: "#c42b22"
-  accentSoft: "#fff0ee"
-  live: "#176947"
-  liveSoft: "#eaf6ef"
-  tabs: "#e9edf1"
+  background: "#ffffff"
+  surface: "#f3f4f1"
+  ink: "#222622"
+  muted: "#686e68"
+  line: "#e3e6df"
+  accent: "#bd342a"
+  accentSoft: "#fff5f2"
+  live: "#bd342a"
+  liveSoft: "#fff5f2"
 typography:
   headline:
-    fontSize: "32px"
-    fontWeight: 800
-    letterSpacing: "-0.8px"
+    fontFamily: "RobotoCondensedBold"
+    fontSize: "46px"
+    lineHeight: "50px"
+    letterSpacing: "-0.7px"
+  headline-compact:
+    fontFamily: "RobotoCondensedBold"
+    fontSize: "34px"
+    lineHeight: "40px"
+    letterSpacing: "-0.7px"
+  masthead:
+    fontFamily: "RobotoCondensedBold"
+    fontSize: "23px"
+    letterSpacing: "-0.3px"
+  score:
+    fontFamily: "RobotoCondensedBold"
+    fontSize: "28px"
   title:
     fontSize: "17px"
-    fontWeight: 700
+    fontWeight: 600
     lineHeight: "23px"
-  body:
-    fontSize: "14px"
+  title-compact:
+    fontSize: "15px"
+    fontWeight: 600
+    lineHeight: "21px"
   label:
     fontSize: "13px"
     fontWeight: 600
+  metadata:
+    fontSize: "12px"
+    lineHeight: "18px"
 rounded:
-  badge: "6px"
-  tab: "7px"
-  control: "8px"
-  tabs: "10px"
+  control: "4px"
+  retry: "8px"
   alert: "12px"
-  card: "14px"
 spacing:
   compact: "8px"
   related: "12px"
-  column: "16px"
+  controls: "16px"
   page: "20px"
-  section: "24px"
+  masthead: "24px"
 components:
   button-refresh:
-    backgroundColor: "{colors.accent}"
-    textColor: "{colors.surface}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.control}"
+    padding: "0 12px"
   button-retry:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.accent}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.retry}"
+    padding: "0 14px"
   search:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.control}"
   tab-selected:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.tab}"
-  status-live:
-    backgroundColor: "{colors.liveSoft}"
-    textColor: "{colors.live}"
-    rounded: "{rounded.badge}"
-  match-card:
+    textColor: "{colors.accent}"
+  score:
     backgroundColor: "{colors.surface}"
-    rounded: "{rounded.card}"
-    padding: "18px"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    width: "78px"
+  score-live:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.background}"
+    rounded: "{rounded.control}"
+    width: "78px"
+  match-row:
+    padding: "22px 20px"
+  match-row-live:
+    backgroundColor: "{colors.liveSoft}"
 ---
 
 # Design System: Матчи тура
 
 ## Overview
 
-This records the implemented single-screen Expo / React Native system. It extends the original white surface, dark sans text and red favorite accent. The README calls for a neat, readable test assignment; there is no separately approved brand metaphor or new visual identity.
+The implemented screen uses a compact football results list: a condensed masthead, prominent scores, flat rows and restrained red states. It replaces the earlier rounded card grid following the user's request to make the interface feel less AI-generated.
 
 **Key Characteristics:**
 
-- Clear score and club hierarchy.
-- Flat white cards on a pale neutral page.
-- Red actions and favorites; green live status.
+- One continuous match list with fine dividers.
+- White background and muted olive-gray supporting tones.
+- Condensed headings and scores; platform sans for clubs and controls.
 
-Source of truth: `src/theme.ts`, `src/screens/MatchesScreen.tsx`, `src/components/MatchCard.tsx`, `src/components/FavoriteButton.tsx` and `App.tsx`. Frontmatter records existing values, not new runtime tokens.
+Source: src/theme.ts, src/screens/MatchesScreen.tsx, src/components/MatchCard.tsx, Icon.tsx, FavoriteButton.tsx, UpdatedAgo.tsx and App.tsx. This records implementation; browser screenshots do not establish native-device verification.
 
 ## Colors
 
 ### Primary
 
-`accent` is the red brand, refresh, retry, selected-favorite and postponed-status color. `accentSoft` backs postponed badges and error notices.
+Accent red marks the selected filter, selected favorite, live score and exceptional status text. accentSoft backs error feedback. live and liveSoft intentionally share the red palette; the latter tints the entire live row. Live status also has a dot and text.
 
 ### Neutral
 
-`background` separates the page from `surface` cards and inputs. `ink` supplies headings, club names, scores and the selected filter; `muted` supplies supporting text. `line` supplies thin card/input borders and dividers. `tabs` is the filter tray fill.
-
-Green `live` and `liveSoft` convey live play, alongside a text label and dot. This is a semantic status treatment, not a second brand palette.
+background is the white page. surface fills search, ordinary score boxes, retry controls and pressed/hovered controls. ink supplies primary text and the masthead rule; muted supplies metadata and inactive icons. line separates controls and match rows.
 
 ## Typography
 
-Use the platform's default sans family; no custom font is configured. The headline is the screen title; title is the club-name role; body is supporting copy; label is the filter role. Scores use bold tabular numerals (30px, weight 700). Metadata uses smaller type (11–13px); the small uppercase score caption is supplementary. Club names wrap rather than truncate.
+The local assets/fonts/RobotoCondensed-Bold.ttf is registered as RobotoCondensedBold through expo-font. It supplies the masthead, screen title and score. The file was instantiated at weight 700 with fontTools from the [Google Fonts Roboto Condensed variable font](https://github.com/google/fonts/tree/main/ofl/robotocondensed); its SIL Open Font License is retained in assets/fonts/OFL.txt.
+
+Other text uses the platform default sans. Club names use the title roles and wrap; city text is smaller (12px, line height 17px). Filter counts and scores use tabular numerals. An unavailable score is a muted dash pair (22px), without a filled box.
 
 ## Layout
 
-The centered list has a maximum outer width (1120px), horizontal page padding (20px) and bottom padding (28px). A single column switches to two at viewport width (1000px), with a column gap (16px). Thus 320, 390 and 678px use one column; 1280px uses two. This describes code behavior, not an independent screenshot verification.
+The list remains one column at every width. Its centered content has maximum outer width (1080px), horizontal padding (20px) and bottom padding (36px). The masthead has vertical padding (24px), a dark bottom rule (1px), and bottom margin (36px).
 
-Headings, filters, metadata and card footers wrap. Search grows within bounds (160–360px), with a minimum height (48px). Cards use an equal-width club column on each side of a centered score block (96px); away text aligns right. Keep minimum widths at zero on flexible club/card containers. The app root currently reserves top space (48px).
+Below viewport width (760px), the title uses the compact role, search fills the available width, and match metadata moves above the teams. The favorite target moves to the row's upper right. Wide rows place metadata (160px), teams and favorite on one line. Teams flank a fixed score box, with the home club right-aligned. Flexible team containers retain minimum width zero.
+
+Rows have minimum height (105px). Compact rows use horizontal padding (14px), top padding (18px), bottom padding (22px) and content gap (18px). The heading, controls, metadata and footer can wrap. The root reserves top space (48px) on native platforms and none on web.
 
 ## Elevation & Depth
 
-No custom shadows or elevation tokens exist. White surfaces, pale fills and thin borders (1px) establish grouping. No authored motion durations or hover/focus styling exist; retain platform behavior unless deliberately implementing and verifying a change.
+There are no authored shadows or elevation effects. Fine rules, pale control fills and the live-row tint establish grouping. No custom animation durations are defined.
 
 ## Shapes
 
-Rounded rectangular controls and cards use the observed radii above. Status badges are compact rounded rectangles; the live indicator is a small circle (6px). Avoid substituting new corner scales when extending these components.
+Match rows have square edges and a bottom divider (1px). Small control and score corners use the control radius; retry and error feedback retain their larger radii. SVG icons use a consistent outline (1.6px stroke), with a filled star for the selected favorite.
 
 ## Components
 
-- **Refresh/retry:** solid red refresh or bordered white retry; minimum height (44px). Press opacity is (0.75); disabled refresh opacity is (0.6).
-- **Favorite:** outlined/filled star with a minimum target (44 × 44px), additional hit slop (12px), muted/rest and red/selected color. Press opacity is (0.65). Accessible labels and selected state accompany the symbol.
-- **Filters:** wrapped tab row in a pale tray with padding/gaps (4px); selected tab uses dark fill and white text. Targets have minimum height (44px). These filter the list; there is no separate navigation system.
-- **Search:** white bordered field using control radius and horizontal padding (14px). Preserve its explicit accessible label.
-- **Match card:** white bordered container; padding is in frontmatter. Status/favorite row precedes clubs and score, followed by a divided date row. Live scores turn green. Status remains readable as text.
-- **Feedback:** pale red error notice with title and retry. Loading and empty states use centered explanatory text. Failed refresh can retain the last successful data with an explicit notice.
+- **Refresh:** quiet icon/text action with minimum height (44px); pressed/hovered fill uses surface, disabled opacity is (0.6).
+- **Filters:** transparent text tabs with counts, gap (16px), minimum height (54px), and selected red bottom rule (2px). Pressed/hovered tabs use surface. These filter matches rather than navigating screens.
+- **Search:** pale inset field with search icon, minimum height (44px), horizontal padding (12px), and explicit accessible label. Wide width is bounded (160–230px).
+- **Match row:** metadata, two club/city pairs, centered score and favorite. Ordinary scores use surface; live scores use red with white text. Status remains visible as text.
+- **Favorite:** SVG star in a minimum target (44 × 44px) with hit slop (12px), muted outline at rest and red fill when selected. Pressed/hovered background uses surface; accessible state and labels accompany the icon.
+- **Feedback:** pale error notice with retry; centered loading/empty explanations. A failed refresh can preserve the last successful data with an explicit notice. Footer labels show device-local time context and elapsed update time.
 
 ## Do's and Don'ts
 
-- Do reuse the theme color roles and existing component shapes.
+- Do keep match rows in one continuous list across widths.
+- Do reuse the existing color roles, local display font and SVG icon style.
 - Do preserve wrapping, device-local time labels and accessible control states.
-- Do keep scores prominent and supporting copy subdued.
+- Don't restore the previous two-column rounded-card layout.
 - Don't encode status or favorite selection through color alone.
-- Don't document custom fonts, animations, shadows or hover treatments as implemented when they are absent.
+- Don't present untested native rendering or custom focus/animation effects as verified behavior.

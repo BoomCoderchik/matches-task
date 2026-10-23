@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import { MatchCard } from '../components/MatchCard';
+import { Icon } from '../components/Icon';
 import { UpdatedAgo } from '../components/UpdatedAgo';
 import { useFavorites } from '../hooks/useFavorites';
 import { useMatches } from '../hooks/useMatches';
 import { Filter, filterMatches } from '../matches';
-import { colors } from '../theme';
+import { colors, displayFont } from '../theme';
 
 const filters: { value: Filter; label: string }[] = [
   { value: 'all', label: 'Все' },
@@ -19,7 +20,7 @@ export function MatchesScreen() {
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
   const { width } = useWindowDimensions();
-  const columns = width >= 1000 ? 2 : 1;
+  const compact = width < 760;
   const matches = data?.matches ?? [];
   const visible = filterMatches(matches, filter, query);
   const hasSelection = query.length > 0 || filter !== 'all';
@@ -28,38 +29,40 @@ export function MatchesScreen() {
   const header = (
     <View>
       <View style={styles.masthead}>
-        <Text style={styles.brand}>Матч-центр</Text>
+        <Text style={styles.brand}>МАТЧ-ЦЕНТР</Text>
         <Text style={styles.brandNote}>Футбол</Text>
       </View>
       <View style={styles.headingRow}>
         <View style={styles.headingGroup}>
-          <Text accessibilityRole="header" style={styles.title}>Матчи тура</Text>
+          <Text accessibilityRole="header" style={[styles.title, compact && styles.compactTitle]}>Матчи тура</Text>
           <Text style={styles.subtitle}>
             {data ? `Тур ${data.round} · ${matches.length} матчей` : 'Расписание и результаты'}
           </Text>
         </View>
         <Pressable accessibilityRole="button" accessibilityState={{ disabled: loading }} aria-disabled={loading}
           disabled={loading} onPress={() => void refresh()}
-          style={({ pressed }) => [styles.refresh, loading && styles.disabled, pressed && styles.pressed]}>
+          style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => [styles.refresh, loading && styles.disabled, (pressed || hovered) && styles.highlight]}>
+          <Icon name="refresh" size={16} color={colors.muted} />
           <Text style={styles.refreshText}>{loading ? 'Загрузка…' : 'Обновить'}</Text>
         </Pressable>
-      </View>
-      <View style={styles.updateRow}>
-        <Text style={styles.timezone}>Время вашего устройства</Text>
-        {updatedAt ? <UpdatedAgo since={updatedAt} /> : null}
       </View>
       <View style={styles.controls}>
         <View accessibilityRole="tablist" style={styles.tabs}>
           {filters.map(({ value, label }) => (
-            <Pressable key={value} accessibilityRole="tab" accessibilityState={{ selected: filter === value }} aria-selected={filter === value}
-              onPress={() => setFilter(value)} style={({ pressed }) => [styles.tab, filter === value && styles.selectedTab, pressed && styles.pressed]}>
+            <Pressable key={value} accessibilityRole="tab" accessibilityLabel={label}
+              accessibilityState={{ selected: filter === value }} aria-selected={filter === value}
+              onPress={() => setFilter(value)} style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => [styles.tab, filter === value && styles.selectedTab, (pressed || hovered) && styles.highlight]}>
               <Text style={[styles.tabText, filter === value && styles.selectedText]}>{label}</Text>
+              {data ? <Text style={[styles.tabCount, filter === value && styles.selectedText]}>{filterMatches(matches, value).length}</Text> : null}
             </Pressable>
           ))}
         </View>
-        <TextInput accessibilityLabel="Поиск по названию клуба" placeholder="Найти клуб"
-          placeholderTextColor={colors.muted} value={query} onChangeText={setQuery}
-          autoCorrect={false} style={styles.search} />
+        <View style={[styles.searchBox, compact && styles.compactSearchBox]}>
+          <Icon name="search" size={17} color={colors.muted} />
+          <TextInput accessibilityLabel="Поиск по названию клуба" placeholder="Найти клуб"
+            placeholderTextColor={colors.muted} value={query} onChangeText={setQuery}
+            autoCorrect={false} style={styles.search} />
+        </View>
       </View>
       {error ? (
         <View accessibilityRole="alert" style={styles.error}>
@@ -71,25 +74,18 @@ export function MatchesScreen() {
           </Pressable>
         </View>
       ) : null}
-      {data && visible.length > 0 ? (
-        <View style={styles.listHeading}>
-          <Text style={styles.listLabel}>Матчи · {visible.length}</Text>
-          <Text style={styles.listNote}>Звёздочка добавляет в избранное</Text>
-        </View>
-      ) : null}
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <FlatList key={columns} data={visible} numColumns={columns}
+      <FlatList data={visible}
         keyExtractor={(match) => match.id} extraData={favorites}
         contentContainerStyle={styles.content}
-        columnWrapperStyle={columns > 1 ? styles.columns : undefined}
         ListHeaderComponent={header}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <MatchCard match={item} favorite={isFavorite(item.id)} onToggle={() => toggle(item.id)} />
+            <MatchCard match={item} favorite={isFavorite(item.id)} onToggle={() => toggle(item.id)} compact={compact} />
           </View>
         )}
         ListEmptyComponent={loading && !data ? (
@@ -105,7 +101,12 @@ export function MatchesScreen() {
             {hasSelection ? <Pressable accessibilityRole="button" onPress={reset} style={styles.retry}><Text style={styles.retryText}>Сбросить фильтры</Text></Pressable> : null}
           </View>
         ) : null}
-        ListFooterComponent={<Text style={styles.footer}>Расписание и результаты · Время указано в вашем часовом поясе</Text>}
+        ListFooterComponent={
+          <View style={styles.footer}>
+            <Text style={styles.timezone}>Время указано в вашем часовом поясе</Text>
+            {updatedAt ? <UpdatedAgo since={updatedAt} /> : null}
+          </View>
+        }
         keyboardShouldPersistTaps="handled" />
     </View>
   );
@@ -113,31 +114,30 @@ export function MatchesScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  content: { width: '100%', maxWidth: 1120, alignSelf: 'center', paddingHorizontal: 20, paddingBottom: 28 },
-  masthead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: colors.line, paddingVertical: 18, marginBottom: 28 },
-  brand: { color: colors.accent, fontSize: 18, fontWeight: '800' },
+  content: { width: '100%', maxWidth: 1080, alignSelf: 'center', paddingHorizontal: 20, paddingBottom: 36 },
+  masthead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: colors.ink, paddingVertical: 24, marginBottom: 36 },
+  brand: { color: colors.ink, fontFamily: displayFont, fontSize: 23, letterSpacing: -0.3 },
   brandNote: { color: colors.muted, fontSize: 13 },
   headingRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' },
-  headingGroup: { gap: 8 },
-  title: { fontSize: 32, fontWeight: '800', letterSpacing: -0.8, color: colors.ink },
-  subtitle: { fontSize: 14, color: colors.muted },
-  refresh: { minHeight: 44, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 8, backgroundColor: colors.accent },
-  refreshText: { color: colors.surface, fontWeight: '700', fontSize: 14 },
+  headingGroup: { gap: 10 },
+  title: { fontFamily: displayFont, fontSize: 46, lineHeight: 50, letterSpacing: -0.7, color: colors.ink },
+  compactTitle: { fontSize: 34, lineHeight: 40 },
+  subtitle: { fontSize: 13, color: colors.muted },
+  refresh: { flexDirection: 'row', gap: 8, minHeight: 44, paddingHorizontal: 12, alignItems: 'center', justifyContent: 'center', borderRadius: 4 },
+  refreshText: { color: colors.ink, fontWeight: '500', fontSize: 13 },
   disabled: { opacity: 0.6 },
-  pressed: { opacity: 0.75 },
-  updateRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap', marginTop: 20, marginBottom: 24 },
-  timezone: { color: colors.muted, fontSize: 13 },
-  controls: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between', marginBottom: 24 },
-  tabs: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, backgroundColor: '#e9edf1', padding: 4, borderRadius: 10 },
-  tab: { minHeight: 44, paddingHorizontal: 13, alignItems: 'center', justifyContent: 'center', borderRadius: 7 },
-  selectedTab: { backgroundColor: colors.ink },
+  highlight: { backgroundColor: colors.surface },
+  timezone: { color: colors.muted, fontSize: 12, lineHeight: 18 },
+  controls: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', rowGap: 16, columnGap: 24, justifyContent: 'space-between', marginTop: 30, paddingBottom: 0, borderBottomWidth: 1, borderBottomColor: colors.line },
+  tabs: { flexDirection: 'row', gap: 16 },
+  tab: { flexDirection: 'row', gap: 6, minWidth: 44, minHeight: 54, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 2, borderBottomColor: 'transparent' },
+  selectedTab: { borderBottomColor: colors.accent },
   tabText: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  selectedText: { color: colors.surface },
-  search: { flexGrow: 1, minWidth: 160, maxWidth: 360, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, borderRadius: 8, minHeight: 48, paddingHorizontal: 14, color: colors.ink, fontSize: 14 },
-  listHeading: { flexDirection: 'row', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap', marginBottom: 12 },
-  listLabel: { fontSize: 13, fontWeight: '700', color: colors.ink },
-  listNote: { fontSize: 12, color: colors.muted },
-  columns: { gap: 16 },
+  tabCount: { fontSize: 12, color: colors.muted, fontVariant: ['tabular-nums'] },
+  selectedText: { color: colors.accent },
+  searchBox: { flexDirection: 'row', alignItems: 'center', gap: 8, flexGrow: 1, maxWidth: 230, minWidth: 160, marginVertical: 8, paddingHorizontal: 12, borderRadius: 4, backgroundColor: colors.surface },
+  compactSearchBox: { width: '100%', maxWidth: '100%', flexGrow: 0 },
+  search: { flex: 1, minWidth: 0, minHeight: 44, color: colors.ink, fontSize: 13 },
   item: { flex: 1, minWidth: 0 },
   error: { borderRadius: 12, backgroundColor: colors.accentSoft, padding: 20, gap: 10, marginBottom: 20 },
   errorTitle: { color: colors.accent, fontSize: 18, fontWeight: '700' },
@@ -147,5 +147,5 @@ const styles = StyleSheet.create({
   empty: { paddingVertical: 52, alignItems: 'center', gap: 12 },
   emptyTitle: { fontSize: 20, fontWeight: '700', color: colors.ink },
   emptyText: { maxWidth: 360, textAlign: 'center', fontSize: 14, lineHeight: 22, color: colors.muted },
-  footer: { fontSize: 12, textAlign: 'center', color: colors.muted, lineHeight: 19, marginTop: 24 },
+  footer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 10, paddingTop: 20 },
 });
