@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T05:59:45.2756914Z",
+  "title": "Design System: Матчи тура",
+  "extensions": {
+    "breakpoints": [
+      {
+        "name": "two-columns",
+        "value": "1000px"
+      }
+    ],
+    "shadows": [],
+    "motion": []
+  },
+  "components": [
+    {
+      "name": "Refresh",
+      "kind": "button",
+      "refersTo": "button-refresh",
+      "description": "Static web translation of the native refresh button; active and disabled opacity match source. No custom hover/focus treatment is defined.",
+      "html": "<button class=\"ds-refresh\">Обновить</button>",
+      "css": ".ds-refresh { background:#c42b22; color:#ffffff; min-height:44px; padding:0 20px; border:0; border-radius:8px; font-size:14px; font-weight:700; font-family:system-ui,sans-serif; } .ds-refresh:active { opacity:.75; } .ds-refresh:disabled { opacity:.6; }"
+    },
+    {
+      "name": "Retry",
+      "kind": "button",
+      "refersTo": "button-retry",
+      "description": "Bordered recovery action. The native retry source defines no authored hover/focus/pressed variant.",
+      "html": "<button class=\"ds-retry\">Повторить</button>",
+      "css": ".ds-retry { background:#ffffff; color:#c42b22; min-height:44px; padding:0 14px; border:1px solid #dce2e8; border-radius:8px; font-size:14px; font-weight:600; font-family:system-ui,sans-serif; }"
+    },
+    {
+      "name": "Club search",
+      "kind": "input",
+      "refersTo": "search",
+      "description": "Search field with native browser focus behavior in this static translation.",
+      "html": "<input class=\"ds-search\" aria-label=\"Поиск по названию клуба\" placeholder=\"Найти клуб\" />",
+      "css": ".ds-search { min-height:48px; min-width:160px; max-width:360px; padding:0 14px; border:1px solid #dce2e8; border-radius:8px; background:#ffffff; color:#17212b; font-size:14px; font-family:system-ui,sans-serif; } .ds-search::placeholder { color:#596674; }"
+    },
+    {
+      "name": "Selected filter",
+      "kind": "chip",
+      "refersTo": "tab-selected",
+      "description": "One selected filter tab; static selected state.",
+      "html": "<button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Все</button>",
+      "css": ".ds-tab { min-height:44px; padding:0 13px; border:0; border-radius:7px; background:#17212b; color:#ffffff; font-size:13px; font-weight:600; font-family:system-ui,sans-serif; } .ds-tab:active { opacity:.75; }"
+    },
+    {
+      "name": "Live status",
+      "kind": "chip",
+      "refersTo": "status-live",
+      "description": "Noninteractive live badge; text accompanies its color and circular indicator.",
+      "html": "<span class=\"ds-live\"><span class=\"ds-dot\" aria-hidden=\"true\"></span>Идёт матч</span>",
+      "css": ".ds-live { display:inline-flex; align-items:center; gap:6px; border-radius:6px; padding:5px 9px; background:#eaf6ef; color:#176947; font-size:12px; font-weight:600; font-family:system-ui,sans-serif; } .ds-dot { width:6px; height:6px; border-radius:3px; background:#176947; }"
+    },
+    {
+      "name": "Match card surface",
+      "kind": "card",
+      "refersTo": "match-card",
+      "description": "Static surface preview; full native MatchCard contains status, favorite, clubs, score and date.",
+      "html": "<div class=\"ds-card\">Матч тура</div>",
+      "css": ".ds-card { background:#ffffff; border:1px solid #dce2e8; border-radius:14px; padding:18px; color:#17212b; font-family:system-ui,sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "overview": "This records the implemented single-screen Expo / React Native system. It extends the original white surface, dark sans text and red favorite accent. The README calls for a neat, readable test assignment; there is no separately approved brand metaphor or new visual identity.",
+    "keyCharacteristics": [
+      "Clear score and club hierarchy.",
+      "Flat white cards on a pale neutral page.",
+      "Red actions and favorites; green live status."
+    ],
+    "rules": [],
+    "dos": [
+      "Do reuse the theme color roles and existing component shapes.",
+      "Do preserve wrapping, device-local time labels and accessible control states.",
+      "Do keep scores prominent and supporting copy subdued."
+    ],
+    "donts": [
+      "Don't encode status or favorite selection through color alone.",
+      "Don't document custom fonts, animations, shadows or hover treatments as implemented when they are absent."
+    ]
+  }
+}
